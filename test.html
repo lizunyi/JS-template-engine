@@ -6,19 +6,28 @@
 		$.renderTemplateEngine('all',{
 			item: 123,
 			data:[{
-				item:"1"
+				item:"1",
+				data2:function(field,rowData){
+					return $.renderTemplateEngine("all2",{
+						tt:[{
+							item2:"A",
+						},{
+							item2:"B",
+						}]
+					})
+				}
 			},{
-				item:"2"
-			}],
-			data2:[{
-				item:"3"
-			},{
-				item:"4"
+				item:"2",
+				data2:function(field,rowData){
+					return $.renderTemplateEngine("all2",{
+						tt:[{
+							item2:"C",
+						},{
+							item2:"D",
+						}]
+					})
+				}
 			}]
-		},{
-			item:function(val,row){
-				debugger
-			}
 		});
 	});
 </script>
@@ -27,15 +36,13 @@
 	<div class="layui-table-cell laytable-cell-1-0-1">{item}<a lay-event="edit" style="color: #01AAED;cursor:pointer">{item}</a>
 	<ul>
 		{for data 
-			<li class="layui-table-cell laytable-cell-1-0-1">{item}</li> 
+			<li class="layui-table-cell laytable-cell-1-0-1">{item} </li>
+			{data2}
 		}
 	</ul>
-	<div class="layui-table-cell laytable-cell-1-0-1">{item}<a lay-event="edit" style="color: #01AAED;cursor:pointer">{item}</a>
-	
-	<ul>
-		{for data2
-			<li class="layui-table-cell laytable-cell-1-0-1">{item}</li> 
-		}
-	</ul>
-	</div>
+</script>
+
+
+<script id="all2" type="text/template">
+	<span>{for tt <A>{item2}</A>}</span>
 </script>
