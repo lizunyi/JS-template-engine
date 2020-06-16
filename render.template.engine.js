@@ -1,17 +1,17 @@
-<script>
 $(function(){
 	function renderValue(content,rowBind,rowFormat){
 		content = content.trim();
 		for(let item in rowBind){
 			let itemVal;
-			if(!$.isArray(rowBind[item])){
-				if(rowFormat[item]){
+			let itemExp = rowBind[item];
+			if(!$.isArray(itemExp)){
+				if(rowFormat && rowFormat[item]){
 					rowFormat[item].call(rowBind,item,rowBind);
 				}else{
-					if(typeof item == "function"){
-						itemVal = rowBind.item();
+					if(typeof itemExp == "function"){
+						itemVal = rowBind.item.call(rowBind,item,rowBind);
 					}else{
-						itemVal = rowBind[item];
+						itemVal = itemExp;
 					}
 				}
 				let regex = new RegExp("{"+item+"}","g");
@@ -21,9 +21,9 @@ $(function(){
 		return content;
 	}
 
-
-	$.renderTemplateEngine = function(id,rowBind,rowFormat){
-		var template = $("#"+id).html().trim();
+	$.renderTemplateEngine = function(id,rowBind,format){
+		format = format || {};
+		let template = $("#"+id).html().trim();
 		if(!rowBind){
 			return template;
 		}
@@ -37,15 +37,14 @@ $(function(){
 				let data = rowBind[var_v];
 				let result = [];
 				for(let i in data){
-					result.push(renderValue(var_c,data[i],rowFormat));
+					result.push(renderValue(var_c,data[i],format[var_v]));
 				}
 				template = template.replace(regex,result.join(""));
 			}
 		}while(array && array.length);
 		
-		template = renderValue(template,rowBind,rowFormat);
+		template = renderValue(template,rowBind,format);
 			
 		return template;
 	}
 });
-</script>
