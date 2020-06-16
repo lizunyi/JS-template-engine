@@ -1,4 +1,4 @@
-$(function(){
+(function($){
 	function renderValue(content,rowBind){
 		content = content.trim();
 		for(let item in rowBind){
@@ -11,12 +11,21 @@ $(function(){
 			}
 			let regex = new RegExp("{"+item+"}","g");
 			content = content.replace(regex,itemVal);
-			
 		}
 		return content;
 	}
 
-	$.renderTemplateEngine = function(id,rowBind){
+	$.renderTemplateEngine = function(options){
+		let id;
+		let rowBind;
+		if(arguments.length > 1){
+			id = arguments[0];
+			rowBind = arguments[1];
+		}else{
+			id = options.id;
+			rowBind = options.data;
+		}
+		
 		let template = $("#"+id).html().trim();
 		if(!rowBind){
 			return template;
@@ -36,9 +45,7 @@ $(function(){
 				template = template.replace(regex,result.join(""));
 			}
 		}while(array && array.length);
-		
 		template = renderValue(template,rowBind);
-		console.log(template);
 		return template;
 	}
-});
+}(jQuery));

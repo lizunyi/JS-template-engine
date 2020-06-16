@@ -3,11 +3,12 @@
 
 <script>
 	$(function(){
-		$.renderTemplateEngine('all',{
+		var data = {
 			item: 123,
 			data:[{
 				item:"1",
 				data2:function(field,rowData){
+				debugger
 					return $.renderTemplateEngine("all2",{
 						tt:[{
 							item2:"A",
@@ -28,6 +29,11 @@
 					})
 				}
 			}]
+		};
+		
+		$.renderTemplateEngine({
+			id: "all",
+			data: data
 		});
 	});
 </script>
@@ -40,7 +46,6 @@
 		}
 	</ul>
 </script>
-
 
 <script id="all2" type="text/template">
 	<span>{for tt <A>{item2}</A>}</span>
