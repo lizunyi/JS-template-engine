@@ -5,7 +5,7 @@ $(function(){
 			let itemVal;
 			let itemExp = rowBind[item];
 			if(typeof itemExp == "function"){
-				itemVal = itemExp.call(rowBind,item,rowBind);
+				itemVal = itemExp.call(this,item,rowBind);
 			}else{
 				itemVal = itemExp;
 			}
@@ -21,7 +21,7 @@ $(function(){
 		if(!rowBind){
 			return template;
 		}
-		let regex = /{for[\s]*([\S]*)[\s]*(.*{\w+}*[\s\S]*)}/;
+		let regex = /{for[\s]*([\S]*)[\s]*([\s\S]*)}/;
 		let array = [];
 		do{
 			array = regex.exec(template);
@@ -31,13 +31,14 @@ $(function(){
 				let data = rowBind[var_v];
 				let result = [];
 				for(let i in data){
-					result.push(renderValue(var_c,data[i]));
+					result.push(renderValue.call(i,var_c,data[i]));
 				}
 				template = template.replace(regex,result.join(""));
 			}
 		}while(array && array.length);
 		
 		template = renderValue(template,rowBind);
+		console.log(template);
 		return template;
 	}
 });
