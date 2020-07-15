@@ -2,15 +2,17 @@
 	function renderValue(content,rowBind){
 		content = content.trim();
 		for(let item in rowBind){
-			let itemVal;
-			let itemExp = rowBind[item];
-			if(typeof itemExp == "function"){
-				itemVal = itemExp.call(this,item,rowBind);
-			}else{
-				itemVal = itemExp;
+			if(content.search("{"+item+"}") > -1) {
+				let itemVal;
+				let itemExp = rowBind[item];
+				if(typeof itemExp == "function"){
+					itemVal = itemExp.call(this,item,rowBind);
+				}else{
+					itemVal = itemExp;
+				}
+				let regex = new RegExp("{"+item+"}","g");
+				content = content.replace(regex,itemVal);
 			}
-			let regex = new RegExp("{"+item+"}","g");
-			content = content.replace(regex,itemVal);
 		}
 		return content;
 	}
