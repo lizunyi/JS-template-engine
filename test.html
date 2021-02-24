@@ -1,52 +1,54 @@
-<script src="jquery-2.1.1.min.js"></script>
+<script src="jquery-1.7.1.min.js"></script>
 <script src="render.template.engine.js"></script>
 
 <script>
 	$(function(){
-		var data = {
-			item: 123,
-			data:[{
-				item:"1",
-				data2:function(field,rowData){
-				debugger
-					return $.renderTemplateEngine("all2",{
-						tt:[{
-							item2:"A",
-						},{
-							item2:"B",
-						}]
-					})
-				}
-			},{
-				item:"2",
-				data2:function(field,rowData){
-					return $.renderTemplateEngine("all2",{
-						tt:[{
-							item2:"C",
-						},{
-							item2:"D",
-						}]
-					})
-				}
-			}]
-		};
-		
-		$.renderTemplateEngine({
+		console.log($.renderTemplateEngine({
 			id: "all",
-			data: data
-		});
+			data: {
+				item: 123,
+				data:[{
+					item:"1",
+					data2:function(field,rowData){
+						return $.renderTemplateEngine("all2",{
+							tt:[{
+								item2:"A",
+							},{
+								item2:"B",
+							}]
+						})
+					}
+				},{
+					item:"2",
+					data2:function(field,rowData){
+						return $.renderTemplateEngine("all2",{
+							tt:[{
+								item2:"C",
+							},{
+								item2:"D",
+							}]
+						})
+					}
+				}]
+			}
+		}) );
 	});
 </script>
 
 <script id="all" type="text/template">
-	<div class="layui-table-cell laytable-cell-1-0-1">{item}<a lay-event="edit" style="color: #01AAED;cursor:pointer">{item}</a>
+<div class="layui-table-cell laytable-cell-1-0-1">
+	{item}
+	<a lay-event="edit" style="color: #01AAED;cursor:pointer">{item}</a>
 	<ul>
 		{for data 
 			<li class="layui-table-cell laytable-cell-1-0-1"></li>
 		}
 	</ul>
+</div>
 </script>
 
 <script id="all2" type="text/template">
-	<span>{for tt <A>{item2}</A>}</span>
+<span>
+	{for tt <A>{item2}</A>}
+</span>
 </script>
